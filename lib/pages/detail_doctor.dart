@@ -1,137 +1,95 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'profile.dart';
+import '../models/doctor.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 class DetailDoctorPage extends StatelessWidget {
-  final String doctorName;
-  final String specialist;
-  final String image;
+  final Doctor doctor;
 
-  const DetailDoctorPage({
-    super.key,
-    required this.doctorName,
-    required this.specialist,
-    required this.image,
-  });
+  const DetailDoctorPage({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade50,
-
-      appBar: AppBar(title: const Text("Detail Dokter"), centerTitle: true),
-
+      appBar: AppBar(
+        title: const Text("Detail Dokter"),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF7BAE8E),
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Image.asset(
-              image,
-              height: 300,
+              doctor.image,
+              height: 280,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-
             const SizedBox(height: 20),
-
-            Text(
-              doctorName,
-
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 10),
-
-            Text(
-              specialist,
-
-              style: const TextStyle(fontSize: 20, color: Colors.blue),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.all(16),
-
-              child: Text(
-                "Dokter profesional dan berpengalaman dalam menangani pasien dengan pelayanan terbaik.",
-
-                textAlign: TextAlign.center,
-
-                style: TextStyle(fontSize: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  Text(
+                    doctor.name,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF7BAE8E).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      doctor.specialist,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF7BAE8E),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Dokter profesional dan berpengalaman dalam menangani pasien dengan pelayanan terbaik dan penuh dedikasi.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 15, color: Colors.black87),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text("Kembali"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF7BAE8E),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-            ),
-
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-
-              icon: const Icon(Icons.arrow_back),
-
-              label: const Text("Kembali"),
             ),
           ],
         ),
       ),
-
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blue,
-
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.home, color: Colors.white),
-                    SizedBox(height: 5),
-                    Text("Home", style: TextStyle(color: Colors.white)),
-                  ],
-                ),
-              ),
-
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.medical_information, color: Colors.white),
-                  SizedBox(height: 5),
-                  Text("Detail", style: TextStyle(color: Colors.white)),
-                ],
-              ),
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ),
-                  );
-                },
-
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.person, color: Colors.white),
-                    SizedBox(height: 5),
-                    Text("Profile", style: TextStyle(color: Colors.white)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }

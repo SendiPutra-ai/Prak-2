@@ -1,100 +1,57 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import '../widgets/bottom_nav_bar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../models/user_data.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box<UserData>('pendaftaran');
+    final user = box.isNotEmpty ? box.values.last : null;
+
     return Scaffold(
       backgroundColor: Colors.blue.shade50,
-
-      appBar: AppBar(title: const Text("Profile"), centerTitle: true),
-
+      appBar: AppBar(
+        title: const Text("Profile"),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF7BAE8E),
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(
-                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+              backgroundColor: const Color(0xFF7BAE8E).withOpacity(0.2),
+              child: const Icon(
+                Icons.person,
+                size: 70,
+                color: Color(0xFF7BAE8E),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            const Text(
-              "Sendi Putra Adi Susilo \n 1462300183",
-
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            Text(
+              user?.nama ?? "Nama Tidak Tersedia",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              "Praktikutm PAB",
-
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            const SizedBox(height: 4),
+            Text(
+              user?.nbi ?? "NBI Tidak Tersedia",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
-
-              child: const Text("Kembali ke Home"),
+            const SizedBox(height: 8),
+            Text(
+              user?.email ?? "_",
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
         ),
       ),
-
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blue,
-
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.home, color: Colors.white),
-                    SizedBox(height: 5),
-                    Text("Home", style: TextStyle(color: Colors.white)),
-                  ],
-                ),
-              ),
-
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.person, color: Colors.white),
-                  SizedBox(height: 5),
-                  Text("Profile", style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
   }
 }
